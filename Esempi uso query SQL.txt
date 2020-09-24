@@ -1,0 +1,45 @@
+Esempi uso query SQL
+
+1. Seleziona tutti gli ospiti che sono stati identificati con
+    la carta di identità.
+2. Seleziona tutti gli ospiti che sono nati dopo il 1988
+3. Seleziona tutti gli ospiti che hanno più di 20 anni
+    (al momento dell’esecuzione della query)
+4. Seleziona tutti gli ospiti il cui nome inizia con la D
+5. Calcolare il totale degli ospiti paganti
+6. Qual è il prezzo massimo pagato?
+7. Seleziona gli ospiti riconosciuti con patente e nati nel 1975
+8. Quanti posti letto ha l’hotel in totale?
+
+*********************************************************
+
+1. SELECT * 
+    FROM `ospiti` 
+    WHERE `document_type` = 'CI'
+
+2. SELECT * 
+    FROM `ospiti` 
+    WHERE `date_of_birth` >= '1999-01-01'
+
+3. SELECT * 
+    FROM `ospiti` 
+    WHERE `date_of_birth` < '2000-24-09'
+
+4. SELECT * 
+    FROM `ospiti` 
+    WHERE `name` LIKE  'D%'
+
+5. SELECT COUNT(*) 
+    FROM `paganti`
+
+6. SELECT MAX(`price`) 
+    FROM `pagamenti`
+
+7. SELECT * 
+    FROM `ospiti` 
+    WHERE `document_type` = 'Driver License' 
+    AND `date_of_birth` > '1974-12-31' 
+    AND `date_of_birth` < '1976-01-01'
+
+8. SELECT SUM(`beds`) AS `posti_letto` 
+    FROM `stanze`
