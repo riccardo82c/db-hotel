@@ -1,0 +1,43 @@
+1. I dati degli ospiti che hanno fatto prenotazioni nel mese di maggio
+
+SELECT ospiti.name, ospiti.lastname, ospiti.date_of_birth, prenotazioni.created_at
+FROM ospiti
+INNER JOIN prenotazioni_has_ospiti
+ON ospiti.id = prenotazioni_has_ospiti.ospite_id
+INNER JOIN prenotazioni
+ON prenotazioni_has_ospiti.prenotazione_id = prenotazioni.id
+WHERE MONTH(prenotazioni.created_at) = 5
+
+2. Ricava i dati di fatturazione (nome, cognome, id prenotazione) per le prenotazione con gli ospiti il cui cognome inizia con la B
+
+SELECT ospiti.name, ospiti.lastname, prenotazioni_has_ospiti.prenotazione_id
+FROM ospiti
+INNER JOIN prenotazioni_has_ospiti
+ON ospiti.id = prenotazioni_has_ospiti.ospite_id
+WHERE ospiti.lastname LIKE 'B%'
+
+
+3. Fai una analisi per vedere se ci sono ore in cui le prenotazioni sono più frequenti
+
+SELECT HOUR(created_at) as `ora_prenotazione`, COUNT(id) as `numero_prenotazioni`
+FROM prenotazioni
+GROUP BY HOUR(created_at)
+ORDER BY `numero_prenotazioni` DESC
+
+4. Le stanze sono state tutte prenotate almeno una volta? (Visualizzare le stanze non ancora prenotate)
+
+SELECT stanze.id
+FROM stanze 
+LEFT JOIN prenotazioni 
+ON stanze.id = prenotazioni.stanza_id
+WHERE prenotazioni.stanza_id IS NULL
+
+
+5. Come si chiamano gli ospiti che hanno fatto più di due prenotazioni?
+
+SELECT ospiti.name, ospiti.lastname, COUNT(prenotazioni_has_ospiti.id) as `numero_prenotazioni`
+FROM prenotazioni_has_ospiti 
+INNER JOIN ospiti
+ON prenotazioni_has_ospiti.ospite_id = ospiti.id
+GROUP BY ospite_id
+HAVING COUNT(prenotazioni_has_ospiti.id) > 2
